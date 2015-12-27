@@ -31,9 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedUPnP">
-      <HintPath>..\..\..\..\managed_upnp\ManagedUPnP\bin\Release\ManagedUPnP.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -71,7 +68,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Discovery\AutoDiscovery.cs" />
-    <Compile Include="Discovery\Service.cs" />
+    <Compile Include="Discovery\Listener.cs" />
+    <Compile Include="Discovery\Message.cs" />
+    <Compile Include="Discovery\NodeStateMessenger.cs" />
     <Compile Include="IpList\IpList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\WPFAssemblyInfo.cs" />
@@ -79,6 +78,7 @@
       <SubType>Code</SubType>
       <DependentUpon>ADWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ADWindow.xaml" />
@@ -89,6 +89,7 @@
   <ItemGroup>
     <Folder Include="Discovery" />
     <Folder Include="IpList" />
+    <Folder Include="Utils" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

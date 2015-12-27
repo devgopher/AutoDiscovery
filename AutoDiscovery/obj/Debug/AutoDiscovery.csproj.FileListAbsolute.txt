@@ -1,0 +1,12 @@
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.exe.config
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.exe
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.pdb
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.csprojResolveAssemblyReference.cache
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\ADWindow.g.cs
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\App.g.cs
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery_MarkupCompile.cache
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery_MarkupCompile.lref
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\ADWindow.baml
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.g.resources
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.exe
+C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.pdb

@@ -4,15 +4,8 @@
  * Время: 11:30
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.IO;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AutoDiscovery
 {
@@ -21,23 +14,52 @@ namespace AutoDiscovery
 	/// </summary>
 	public partial class ADWindow : Window
 	{
+		private AutoDiscovery ad = new AutoDiscovery();
+		
 		public ADWindow()
 		{
 			InitializeComponent();
+			this.Closed += this.Window_Closed;
+			
+			ad.Hosts.Added += IpList_Updated;
+			ad.Hosts.Removed += IpList_Updated;
 		}
 		
 		void Start_Click(object sender, RoutedEventArgs e)
-		{			
-			AutoDiscovery ad = new AutoDiscovery();
-			
-			MemoryStream ms = new MemoryStream();
-			StreamWriter sw = new StreamWriter( ms );
+		{
+			local_ip.Text = Utils.Utils.GetLocalIP();
+			ad.StartNode();
+		}
 		
-			ad.Start();
-		//	discovery_results.Tex
-			
-			
+		void Stop_Click(object sender, RoutedEventArgs e)
+		{
+			ad.StopNode();
+		}
 		
+		void Window_Closed(object sender, EventArgs e)
+		{
+			ad.StopNode();
+		}
+		
+		void IpList_Updated( object sender,
+		                    IpListEventArgs e )
+		{
+			var timer_disp_delegate =
+				new Action (
+					() => {
+						discovery_results.Clear();
+						var ip_list = ad.Hosts;
+						foreach ( var ip in ip_list ) {
+							discovery_results.Text += "\r\n"+ip;
+							
+						}
+					}
+				);
+			
+			Dispatcher.Invoke(
+				timer_disp_delegate
+			);
+
 		}
 	}
 }

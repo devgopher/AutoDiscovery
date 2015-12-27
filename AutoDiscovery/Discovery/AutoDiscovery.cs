@@ -4,10 +4,10 @@
  * Время: 14:08
  */
 using System;
-using ManagedUPnP;
-using ManagedUPnP.Components;
+using System.Net;
+using System.Text;
+using System.Net.Sockets;
 using System.Collections.Generic;
-using System.IO;
 
 namespace AutoDiscovery
 {
@@ -16,44 +16,68 @@ namespace AutoDiscovery
 	/// </summary>
 	public class AutoDiscovery
 	{
+		public static int BROADCAST_PORT = 45000;
+
+		private IPAddress broadcast_addr = IPAddress.Broadcast;
+		private readonly UdpClient udp_client = null;
+		private NodeStateMessenger nsm;
+		private Listener listener;
+		public IpList Hosts { get; private set; }
+		public List<Message> Msgs { get; private set; }
+		
+		public static Encoding ascii_encoding = Encoding.ASCII;
+		
 		public AutoDiscovery()
 		{
-			ip_list.Added += OutputItem;
-			output_stream = new MemoryStream(1024);
-			output_stream_writer = new StreamWriter(output_stream);
-		}
-		
-		
-		private void ScanServ() {
-			service_list.Clear();
-			service_list.AddRange( ManagedUPnP.Discovery.FindServices( AddressFamilyFlags.IPv4, false ) );
-		}
-		
-		private List<string> GetAdapterIPs( Device device ) {
-			foreach ( var adapter_ip in device.AdapterIPAddresses ) {
-				if ( !ip_list.Contains( adapter_ip.ToString() ) ) {
-					ip_list.Add( adapter_ip.ToString() );
-				}
-			}
+			Hosts = new IpList();
+			Msgs = new List<Message>();
 			
-			return ip_list;
+			udp_client = new UdpClient(BROADCAST_PORT, AddressFamily.InterNetwork);
+			udp_client.EnableBroadcast = true;
+			nsm = new NodeStateMessenger( udp_client, broadcast_addr );
+			listener = new Listener( udp_client );
+			udp_client.MulticastLoopback = false;
 		}
 		
-		public void Start() {
+		public void StartNode() {
+			nsm.Start();
+			listener.Start( RegisterMsg );
+		}
+		
+		public void StopNode() {
+			nsm.Stop();
+			listener.Stop();
 			
-			ScanServ();
-			foreach (  var serv in service_list ) {
-				var ad_addrs = GetAdapterIPs( serv.Device );
+			Hosts.Clear();
+			Msgs.Clear();
+		}
+		
+		public void RegisterMsg( string input ) {
+			var message = Message.Get(input);
+			Msgs.Add( message );
+			ProcessMessage( message );
+		}
+		
+		private void ProcessMessage( Message message ) {
+			switch( message.Contains ) {
+				case NodeStateMessenger.start_bc_msg:
+				case NodeStateMessenger.onair_bc_msg:
+					RegisterHost( message );
+					break;
+				case NodeStateMessenger.stop_bc_msg:
+					RemoveHost( message );
+					break;
 			}
 		}
 		
-		public void OutputItem( Object  sender, IpListEventArgs args ) {
-		//	output_stream
+		private void RegisterHost( Message message ) {
+			if (!(Hosts.Contains( message.FromIp )))
+				Hosts.Add( message.FromIp );
 		}
 		
-		private readonly Services service_list = new Services();
-		private readonly IpList ip_list = new IpList();
-		private readonly MemoryStream output_stream = null;
-		private readonly StreamWriter output_stream_writer = null;
+		private void RemoveHost( Message message ) {
+			if ( Hosts.Contains( message.FromIp ))
+				Hosts.Remove( message.FromIp );
+		}
 	}
 }
