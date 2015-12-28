@@ -18,13 +18,33 @@ namespace AutoDiscovery
 	public class NodeStateNotificator
 	{
 		private const string app_name = "AUTODISCOVERY";
+		
+		#region Messages
 		public const string start_bc_msg = app_name+"_START";
 		public const string onair_bc_msg = app_name+"_ONAIR";
 		public const string stop_bc_msg = app_name+"_STOP";
+		#endregion
+		
 		private readonly UdpClient udp_client = null;
 		private readonly Timer msg_sending_timer = null;
 		private IPAddress broadcast_ip;
 		private String local_ip;
+		private bool started = false;
+		
+		public NodeStateNotificator( UdpClient _client,
+		                            IPAddress mult_ip )
+		{
+			if ( mult_ip == null )
+				return;
+			broadcast_ip = mult_ip;
+			udp_client = _client;
+			object state = null;
+			local_ip = Utils.Utils.GetLocalIP();
+			msg_sending_timer = new Timer( SendOnAir, 
+			                              state, 
+			                              -1, 
+			                              200 );
+		}
 		
 		/// <summary>
 		/// Sends "OnAir" notifications
@@ -62,38 +82,30 @@ namespace AutoDiscovery
 			                              multicast_ep ));
 		}
 		
-		public NodeStateNotificator( UdpClient _client,
-		                            IPAddress mult_ip )
-		{
-			if ( mult_ip == null )
-				return;
-			broadcast_ip = mult_ip;
-			udp_client = _client;
-			object state = null;
-			local_ip = Utils.Utils.GetLocalIP();
-			msg_sending_timer = new Timer( SendOnAir, state, -1, 200 );
-		}
-		
+		/// <summary>
+		/// Start notifying process
+		/// </summary>
 		public void Start() {
 			if ( started == true )
 				return;
-			
+			// starting timer
 			msg_sending_timer.Change( 0, 200 );
-			
+			// sending "START" message
 			SendMsg( start_bc_msg );
 			started = true;
 		}
 
+		/// <summary>
+		/// Stop notifying process
+		/// </summary>
 		public void Stop() {
 			if ( started == false )
 				return;
-
+			// stopping timer
 			msg_sending_timer.Change( -1, 200 );
 			started = false;
-			
+			// sending "STOP" message			
 			SendMsg( stop_bc_msg );
 		}
-		
-		private bool started = false;
 	}
 }

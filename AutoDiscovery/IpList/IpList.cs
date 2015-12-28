@@ -21,7 +21,9 @@ namespace AutoDiscovery
 	}
 	
 	/// <summary>
-	/// Description of IpList.
+	/// IpList - is a List class realization
+	/// with an ability to raise events on 
+	/// "Add" and "Remove" actions
 	/// </summary>
 	public class IpList : List<String>
 	{

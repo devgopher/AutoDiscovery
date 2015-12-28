@@ -67,6 +67,7 @@
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Discovery\ActivityMonitor.cs" />
     <Compile Include="Discovery\AutoDiscovery.cs" />
     <Compile Include="Discovery\Listener.cs" />
     <Compile Include="Discovery\Message.cs" />

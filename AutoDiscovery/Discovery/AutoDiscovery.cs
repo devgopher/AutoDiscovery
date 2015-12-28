@@ -32,11 +32,11 @@ namespace AutoDiscovery
 			Hosts = new IpList();
 			Msgs = new List<Message>();
 			
-			udp_client = new UdpClient(BROADCAST_PORT, AddressFamily.InterNetwork);
+			udp_client = new UdpClient( BROADCAST_PORT, 
+			                           AddressFamily.InterNetwork );
 			udp_client.EnableBroadcast = true;
 			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
 			listener = new Listener( udp_client );
-			udp_client.MulticastLoopback = false;
 		}
 		
 		/// <summary>
@@ -67,7 +67,7 @@ namespace AutoDiscovery
 		/// Message registration
 		/// </summary>
 		/// <param name="input">Received full message</param>
-		private  void RegisterMsg( string input ) {
+		private void RegisterMsg( string input ) {
 			// Getting a Message object
 			var message = Message.Get(input);
 			// Registering it in a messages list
@@ -76,6 +76,10 @@ namespace AutoDiscovery
 			ProcessMessage( message );
 		}
 		
+		/// <summary>
+		/// Processing a received message
+		/// </summary>
+		/// <param name="message"></param>
 		private void ProcessMessage( Message message ) {
 			switch( message.Contains ) {
 				case NodeStateNotificator.start_bc_msg:

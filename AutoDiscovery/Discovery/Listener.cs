@@ -17,7 +17,7 @@ namespace AutoDiscovery
 	{
 		private UdpClient listener_client = null;
 		private IPEndPoint group_ep =
-			new IPEndPoint(IPAddress.Any, AutoDiscovery.BROADCAST_PORT);
+			new IPEndPoint( IPAddress.Any, AutoDiscovery.BROADCAST_PORT );
 		private bool listening = false;
 		private bool started = false;
 		
@@ -40,7 +40,7 @@ namespace AutoDiscovery
 			listener_client = _client;
 		}
 		
-		private void StartInner( RegisterMessage reg_proc ) {
+		private void ThreadProc( RegisterMessage reg_proc ) {
 			try {
 				started = true;
 				listening = true;
@@ -51,8 +51,7 @@ namespace AutoDiscovery
 						AutoDiscovery.ascii_encoding.GetString( bytes, 0, bytes.Length );
 					// registering an incoming message
 					reg_proc( response );
-				}
-				
+				}				
 			} catch ( ThreadInterruptedException ex ) {
 				// doing nothing
 			} catch ( Exception ex ) {
@@ -69,7 +68,7 @@ namespace AutoDiscovery
 		public void Start( RegisterMessage reg_proc ) {
 			if ( started )
 				return;
-			listener_thread = new Thread( ()=>StartInner(reg_proc) );
+			listener_thread = new Thread(()=>ThreadProc(reg_proc));
 			listener_thread.Start();
 		}
 		

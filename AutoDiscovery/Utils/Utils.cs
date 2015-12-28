@@ -11,7 +11,7 @@ using System.Net.NetworkInformation;
 namespace AutoDiscovery.Utils
 {
 	/// <summary>
-	/// Description of Utils.
+	/// Different utilities
 	/// </summary>
 	public class Utils
 	{
@@ -29,7 +29,7 @@ namespace AutoDiscovery.Utils
 					return ip.ToString();
 				}
 			}
-			throw new Exception("Local IP Address Not Found!");
+			throw new Exception("Local IP address was not found!");
 		}
 		
 	}
