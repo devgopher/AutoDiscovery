@@ -10,3 +10,15 @@ C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\ADWindow.ba
 C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.g.resources
 C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.exe
 C:\Users\Igor\Documents\GitHub\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.pdb
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.exe.config
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.exe
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\bin\Debug\AutoDiscovery.pdb
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.csprojResolveAssemblyReference.cache
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\ADWindow.g.cs
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\App.g.cs
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery_MarkupCompile.cache
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery_MarkupCompile.lref
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\ADWindow.baml
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.g.resources
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.exe
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.pdb

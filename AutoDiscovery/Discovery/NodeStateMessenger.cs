@@ -12,11 +12,11 @@ using System.Threading;
 namespace AutoDiscovery
 {
 	/// <summary>
-	/// Description of NodeStateMessenger.
+	/// A component for sending notifications about
+	/// state of our node to other network nodes
 	/// </summary>
-	public class NodeStateMessenger
+	public class NodeStateNotificator
 	{
-		// multicast messages
 		private const string app_name = "AUTODISCOVERY";
 		public const string start_bc_msg = app_name+"_START";
 		public const string onair_bc_msg = app_name+"_ONAIR";
@@ -26,17 +26,35 @@ namespace AutoDiscovery
 		private IPAddress broadcast_ip;
 		private String local_ip;
 		
+		/// <summary>
+		/// Sends "OnAir" notifications
+		/// </summary>
+		/// <param name="state"></param>
 		public void SendOnAir( object state ) {
 			SendMsg( onair_bc_msg );
 		}
 		
-		public int? SendMsg( string msg ) {
+		/// <summary>
+		/// Forming a full message for transmitting into network
+		/// </summary>
+		/// <param name="msg_content"></param>
+		/// <returns></returns>
+		private string FormFullMessage( string msg_content ) {
+			return local_ip.ToString()+":"+msg_content;
+		}
+		
+		/// <summary>
+		/// Sends a notification
+		/// </summary>
+		/// <param name="msg_content">Notification contents</param>
+		/// <returns></returns>
+		public int? SendMsg( string msg_content ) {
 			var onair_bytes =
-				AutoDiscovery.ascii_encoding.GetBytes(
-					local_ip.ToString()+":"+msg);
+				AutoDiscovery.ascii_encoding
+				.GetBytes(FormFullMessage(msg_content));
 			
 			var multicast_ep = new IPEndPoint(
-				broadcast_ip, 
+				broadcast_ip,
 				AutoDiscovery.BROADCAST_PORT );
 			
 			return (int?)(udp_client.Send( onair_bytes,
@@ -44,8 +62,8 @@ namespace AutoDiscovery
 			                              multicast_ep ));
 		}
 		
-		public NodeStateMessenger( UdpClient _client,
-		                          IPAddress mult_ip )
+		public NodeStateNotificator( UdpClient _client,
+		                            IPAddress mult_ip )
 		{
 			if ( mult_ip == null )
 				return;

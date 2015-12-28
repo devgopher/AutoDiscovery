@@ -8,7 +8,7 @@ using System;
 namespace AutoDiscovery
 {
 	/// <summary>
-	/// Description of Message.
+	/// A class for messages representation
 	/// </summary>
 	public struct Message
 	{
@@ -16,6 +16,11 @@ namespace AutoDiscovery
 		public string FromIp {get; private set;}
 		public string Contains {get; private set;}
 		
+		/// <summary>
+		/// Get a Message object from text input
+		/// </summary>
+		/// <param name="original"></param>
+		/// <returns></returns>
 		static public Message Get( string original ) {
 			var input = original.Split(':');
 			if ( input.Length == 2 ) {

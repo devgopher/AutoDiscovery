@@ -20,7 +20,7 @@ namespace AutoDiscovery
 
 		private IPAddress broadcast_addr = IPAddress.Broadcast;
 		private readonly UdpClient udp_client = null;
-		private NodeStateMessenger nsm;
+		private NodeStateNotificator nsm;
 		private Listener listener;
 		public IpList Hosts { get; private set; }
 		public List<Message> Msgs { get; private set; }
@@ -34,50 +34,84 @@ namespace AutoDiscovery
 			
 			udp_client = new UdpClient(BROADCAST_PORT, AddressFamily.InterNetwork);
 			udp_client.EnableBroadcast = true;
-			nsm = new NodeStateMessenger( udp_client, broadcast_addr );
+			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
 			listener = new Listener( udp_client );
 			udp_client.MulticastLoopback = false;
 		}
 		
+		/// <summary>
+		/// Start discovery process
+		/// </summary>
 		public void StartNode() {
+			// Start status messaging
 			nsm.Start();
+			// Start listener
 			listener.Start( RegisterMsg );
 		}
 		
+		/// <summary>
+		/// Stop discovery process
+		/// </summary>
 		public void StopNode() {
+			// Stop status messaging
 			nsm.Stop();
+			// Stop listener
 			listener.Stop();
 			
+			// Clear messages and hosts lists
 			Hosts.Clear();
 			Msgs.Clear();
 		}
 		
-		public void RegisterMsg( string input ) {
+		/// <summary>
+		/// Message registration
+		/// </summary>
+		/// <param name="input">Received full message</param>
+		private  void RegisterMsg( string input ) {
+			// Getting a Message object
 			var message = Message.Get(input);
+			// Registering it in a messages list
 			Msgs.Add( message );
+			// Processing message by it's contents
 			ProcessMessage( message );
 		}
 		
 		private void ProcessMessage( Message message ) {
 			switch( message.Contains ) {
-				case NodeStateMessenger.start_bc_msg:
-				case NodeStateMessenger.onair_bc_msg:
+				case NodeStateNotificator.start_bc_msg:
+				case NodeStateNotificator.onair_bc_msg:
 					RegisterHost( message );
 					break;
-				case NodeStateMessenger.stop_bc_msg:
+				case NodeStateNotificator.stop_bc_msg:
 					RemoveHost( message );
 					break;
 			}
 		}
 		
+		/// <summary>
+		/// A new host registration
+		/// </summary>
+		/// <param name="message"></param>
 		private void RegisterHost( Message message ) {
 			if (!(Hosts.Contains( message.FromIp )))
 				Hosts.Add( message.FromIp );
 		}
 		
+		/// <summary>
+		/// Remove host from a host list
+		/// </summary>
+		/// <param name="message"></param>
 		private void RemoveHost( Message message ) {
-			if ( Hosts.Contains( message.FromIp ))
-				Hosts.Remove( message.FromIp );
+			RemoveHost(message.FromIp);
+		}
+	
+		/// <summary>
+		/// Remove host from a host list
+		/// </summary>
+		/// <param name="host_ip"></param>		
+		private void RemoveHost( string host_ip ) {
+			if ( Hosts.Contains( host_ip ))
+				Hosts.Remove( host_ip );
 		}
 	}
 }

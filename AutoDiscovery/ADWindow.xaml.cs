@@ -33,6 +33,7 @@ namespace AutoDiscovery
 		
 		void Stop_Click(object sender, RoutedEventArgs e)
 		{
+			discovery_results.Clear();
 			ad.StopNode();
 		}
 		
@@ -51,7 +52,6 @@ namespace AutoDiscovery
 						var ip_list = ad.Hosts;
 						foreach ( var ip in ip_list ) {
 							discovery_results.Text += "\r\n"+ip;
-							
 						}
 					}
 				);
