@@ -75,7 +75,7 @@ namespace AutoDiscovery
 			
 			var multicast_ep = new IPEndPoint(
 				broadcast_ip,
-				AutoDiscovery.BROADCAST_PORT );
+				CommonEnvironment.BROADCAST_PORT );
 			
 			return (int?)(udp_client.Send( onair_bytes,
 			                              onair_bytes.Length,

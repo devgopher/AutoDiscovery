@@ -16,8 +16,6 @@ namespace AutoDiscovery
 	/// </summary>
 	public class AutoDiscovery
 	{
-		public static int BROADCAST_PORT = 45000;
-
 		private IPAddress broadcast_addr = IPAddress.Broadcast;
 		private readonly UdpClient udp_client = null;
 		private NodeStateNotificator nsm;
@@ -27,14 +25,24 @@ namespace AutoDiscovery
 		
 		public static Encoding ascii_encoding = Encoding.ASCII;
 		
+		
+		public AutoDiscovery( UdpClient _udp_client )
+		{
+			Hosts = new IpList();
+			Msgs = new List<Message>();
+			
+			udp_client = _udp_client;
+			udp_client.EnableBroadcast = true;
+			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
+			listener = new Listener( udp_client );
+		}
+		
 		public AutoDiscovery()
 		{
 			Hosts = new IpList();
 			Msgs = new List<Message>();
 			
-			udp_client = new UdpClient( BROADCAST_PORT, 
-			                           AddressFamily.InterNetwork );
-			udp_client.EnableBroadcast = true;
+			udp_client = CommonEnvironment.udp_client;
 			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
 			listener = new Listener( udp_client );
 		}

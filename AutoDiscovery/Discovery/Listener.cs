@@ -17,7 +17,7 @@ namespace AutoDiscovery
 	{
 		private UdpClient listener_client = null;
 		private IPEndPoint group_ep =
-			new IPEndPoint( IPAddress.Any, AutoDiscovery.BROADCAST_PORT );
+			new IPEndPoint( IPAddress.Any, CommonEnvironment.BROADCAST_PORT );
 		private bool listening = false;
 		private bool started = false;
 		
