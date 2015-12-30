@@ -19,10 +19,11 @@ namespace AutoDiscovery.Tests
 		[Test]
 		public void StartStopTest()
 		{
-			CommonTestEnvironment.Disconnect();
+			CommonTestEnvironment.ResetConnection();
 			
 			bool message_registered = false;
 			
+			// Starting a listener
 			listener = new Listener( CommonEnvironment.udp_client );
 			
 			listener.Start(
@@ -30,18 +31,22 @@ namespace AutoDiscovery.Tests
 					message_registered = true;
 				}
 			);
+
+			// 1.5 sec delay to start
+			System.Threading.Thread.Sleep(1500); 
 			
+			// Checking Start and Listening variables..
 			Assert.True( listener.Listening );
 			Assert.True( listener.Started );
 			
-			System.Threading.Thread.Sleep(5000);
-			
+			// stopping a listener
 			listener.Stop();
 			
+			// Checking Start and Listening variables..
 			Assert.False( listener.Listening );
 			Assert.False( listener.Started );
 			
-			CommonTestEnvironment.Disconnect();
+			CommonTestEnvironment.ResetConnection();
 		}
 
 	}

@@ -16,7 +16,6 @@
  #endregion
  
 using System;
-using System.Net;
 using System.Text;
 using System.Net.Sockets;
 using System.Collections.Generic;
@@ -38,18 +37,6 @@ namespace AutoDiscovery
 		
 		public static Encoding ascii_encoding = Encoding.ASCII;
 		
-		public AutoDiscovery( UdpClient _udp_client )
-		{
-			Hosts = new IpList();
-			Msgs = new List<Message>();
-			
-			udp_client = _udp_client;
-			udp_client.EnableBroadcast = true;
-			nsm = new NodeStateNotificator( udp_client, CommonEnvironment.bcast_address );
-			listener = new Listener( udp_client );
-			act_monitor = new ActivityMonitor( this, RemoveHostRange, RemoveMsgsRange );
-		}
-
 		public AutoDiscovery()
 		{
 			Hosts = new IpList();
@@ -59,6 +46,13 @@ namespace AutoDiscovery
 			nsm = new NodeStateNotificator( udp_client, CommonEnvironment.bcast_address );
 			listener = new Listener( udp_client );
 			act_monitor = new ActivityMonitor( this, RemoveHostRange, RemoveMsgsRange );
+		}
+
+		public AutoDiscovery( UdpClient _udp_client ) : this()
+		{
+			udp_client = _udp_client;
+			udp_client.EnableBroadcast = true;
+			listener.SetUdpClient(_udp_client);
 		}
 		
 		/// <summary>

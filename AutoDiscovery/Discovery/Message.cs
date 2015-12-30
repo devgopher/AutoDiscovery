@@ -19,7 +19,7 @@ namespace AutoDiscovery
 		/// <summary>
 		/// Get a Message object from text input
 		/// </summary>
-		/// <param name="original"></param>
+		/// <param name="original">Received message in a text form</param>
 		/// <returns></returns>
 		static public Message Get( string original ) {
 			var input = original.Split(':');
