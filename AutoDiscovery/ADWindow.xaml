@@ -37,7 +37,7 @@
 			RenderTransformOrigin="0.375,-0.2826"
 			Height="23"
 			Width="48"
-			x:Name="button1"
+			x:Name="start_button"
 			Click="Start_Click"
 			Grid.Row="0"
 			HorizontalAlignment="Right"
@@ -70,7 +70,8 @@
 			RenderTransformOrigin="0.4917,0.545"
 			Content="Stop"
 			Click="Stop_Click"
-			Grid.Column="1" />
+			Grid.Column="1"
+			IsEnabled="False"/>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition
 				Width="0.894662921348315*" />

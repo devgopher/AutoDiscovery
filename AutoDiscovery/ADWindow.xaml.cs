@@ -29,12 +29,18 @@ namespace AutoDiscovery
 		{
 			local_ip.Text = Utils.Utils.GetLocalIP();
 			ad.StartNode();
+			
+			stop_button.IsEnabled = true;
+			start_button.IsEnabled = false;
 		}
 		
 		void Stop_Click(object sender, RoutedEventArgs e)
 		{
 			discovery_results.Clear();
 			ad.StopNode();
+			
+			stop_button.IsEnabled = false;
+			start_button.IsEnabled = true;
 		}
 		
 		void Window_Closed(object sender, EventArgs e)

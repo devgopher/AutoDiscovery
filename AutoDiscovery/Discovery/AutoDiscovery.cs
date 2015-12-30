@@ -3,6 +3,18 @@
  * Дата: 22.12.2015
  * Время: 14:08
  */
+ 
+ #region Annotation
+ /*
+  * AutoDiscovery is a test solution for seeking neighbour
+  * nodes in a local network. A UDP was used protocol 
+  * due to several reasons:
+  * - low packet delay;
+  * - multicasting/broadcasting support;
+  * - simplicity of usage.
+  */ 
+ #endregion
+ 
 using System;
 using System.Net;
 using System.Text;

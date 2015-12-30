@@ -8,7 +8,7 @@ using System;
 namespace AutoDiscovery.Tests
 {
 	/// <summary>
-	/// Description of CommonTestEnvironment.
+	/// Common variables and methods for unit tests
 	/// </summary>
 	public static class CommonTestEnvironment
 	{
