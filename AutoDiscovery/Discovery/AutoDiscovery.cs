@@ -16,15 +16,15 @@ namespace AutoDiscovery
 	/// </summary>
 	public class AutoDiscovery
 	{
-		private IPAddress broadcast_addr = IPAddress.Broadcast;
 		private readonly UdpClient udp_client = null;
-		private NodeStateNotificator nsm;
-		private Listener listener;
+		private NodeStateNotificator nsm = null;
+		private Listener listener = null;
+		private ActivityMonitor act_monitor = null;
+		
 		public IpList Hosts { get; private set; }
 		public List<Message> Msgs { get; private set; }
 		
 		public static Encoding ascii_encoding = Encoding.ASCII;
-		
 		
 		public AutoDiscovery( UdpClient _udp_client )
 		{
@@ -33,18 +33,20 @@ namespace AutoDiscovery
 			
 			udp_client = _udp_client;
 			udp_client.EnableBroadcast = true;
-			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
+			nsm = new NodeStateNotificator( udp_client, CommonEnvironment.bcast_address );
 			listener = new Listener( udp_client );
+			act_monitor = new ActivityMonitor( this, RemoveHostRange, RemoveMsgsRange );
 		}
-		
+
 		public AutoDiscovery()
 		{
 			Hosts = new IpList();
 			Msgs = new List<Message>();
 			
 			udp_client = CommonEnvironment.udp_client;
-			nsm = new NodeStateNotificator( udp_client, broadcast_addr );
+			nsm = new NodeStateNotificator( udp_client, CommonEnvironment.bcast_address );
 			listener = new Listener( udp_client );
+			act_monitor = new ActivityMonitor( this, RemoveHostRange, RemoveMsgsRange );
 		}
 		
 		/// <summary>
@@ -55,6 +57,8 @@ namespace AutoDiscovery
 			nsm.Start();
 			// Start listener
 			listener.Start( RegisterMsg );
+			// Start activity monitor
+			act_monitor.Start();
 		}
 		
 		/// <summary>
@@ -69,6 +73,9 @@ namespace AutoDiscovery
 			// Clear messages and hosts lists
 			Hosts.Clear();
 			Msgs.Clear();
+			
+			// Stop activity monitor
+			act_monitor.Stop();
 		}
 		
 		/// <summary>
@@ -103,7 +110,7 @@ namespace AutoDiscovery
 		/// <summary>
 		/// A new host registration
 		/// </summary>
-		/// <param name="message"></param>
+		/// <param name="message">a message</param>
 		private void RegisterHost( Message message ) {
 			if (!(Hosts.Contains( message.FromIp )))
 				Hosts.Add( message.FromIp );
@@ -112,18 +119,36 @@ namespace AutoDiscovery
 		/// <summary>
 		/// Remove host from a host list
 		/// </summary>
-		/// <param name="message"></param>
+		/// <param name="message">a message</param>
 		private void RemoveHost( Message message ) {
 			RemoveHost(message.FromIp);
 		}
-	
+		
 		/// <summary>
 		/// Remove host from a host list
 		/// </summary>
-		/// <param name="host_ip"></param>		
+		/// <param name="host_ip">host ip</param>
 		private void RemoveHost( string host_ip ) {
-			if ( Hosts.Contains( host_ip ))
-				Hosts.Remove( host_ip );
+			Hosts.Remove( host_ip );
+		}
+		
+		/// <summary>
+		/// Remove host from a host list
+		/// </summary>
+		/// <param name="hosts">hosts list</param>
+		private void RemoveHostRange(List<string> hosts ) {
+			foreach ( var host in hosts )
+				RemoveHost(host);
+		}		
+		
+		/// <summary>
+		/// Remove messages from a messages list
+		/// </summary>
+		/// <param name="old_msgs">Old messages list</param>
+		private void RemoveMsgsRange(List<Message> old_msgs ) {
+			foreach ( var msg in old_msgs ) {
+				Msgs.Remove( msg );
+			}
 		}
 	}
 }

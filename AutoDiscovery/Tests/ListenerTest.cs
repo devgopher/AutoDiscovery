@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace AutoDiscovery.Tests
 {
@@ -25,14 +26,21 @@ namespace AutoDiscovery.Tests
 			listener = new Listener( CommonEnvironment.udp_client );
 			
 			listener.Start(
-				( x ) => { 
+				( x ) => {
 					message_registered = true;
 				}
 			);
 			
+			Assert.True( listener.Listening );
+			Assert.True( listener.Started );
+			
 			System.Threading.Thread.Sleep(5000);
 			
 			listener.Stop();
+			
+			Assert.False( listener.Listening );
+			Assert.False( listener.Started );
+			
 			CommonTestEnvironment.Disconnect();
 		}
 

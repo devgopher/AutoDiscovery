@@ -50,3 +50,17 @@ AutoDiscovery/bin/Debug/AutoDiscovery.pdb
 *.pdb
 docs/*
 docs/html/*
+
+AutoDiscovery/bin/**
+AutoDiscovery/bin/Debug/**
+AutoDiscovery/bin/Release/**
+
+AutoDiscovery/obj/**
+AutoDiscovery/obj/Debug/**
+AutoDiscovery/obj/Release/**
+*.baml
+AutoDiscovery/obj/Debug/AutoDiscovery.csproj.FileListAbsolute.txt
+*.lref
+*.cache
+*.exe
+*.dll

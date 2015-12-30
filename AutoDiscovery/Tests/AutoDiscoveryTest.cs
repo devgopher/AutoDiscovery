@@ -16,6 +16,7 @@ namespace AutoDiscovery.Tests
 		public void StartStopNodeTest()
 		{
 			CommonTestEnvironment.Disconnect();
+			
 			ad.StartNode();
 			System.Threading.Thread.Sleep(300);
 			Assert.True( ad.Hosts.Count > 0 );

@@ -12,8 +12,7 @@ using System.Threading;
 namespace AutoDiscovery
 {
 	/// <summary>
-	/// A component for sending notifications about
-	/// state of our node to other network nodes
+	/// A component for sending  state notifications to other network nodes
 	/// </summary>
 	public class NodeStateNotificator
 	{
@@ -27,23 +26,27 @@ namespace AutoDiscovery
 		
 		private readonly UdpClient udp_client = null;
 		private readonly Timer msg_sending_timer = null;
+		private readonly int msg_sending_timer_int = 200;
+		
 		private IPAddress broadcast_ip;
 		private String local_ip;
-		private bool started = false;
+		public bool Started { get; private set; }
 		
 		public NodeStateNotificator( UdpClient _client,
-		                            IPAddress mult_ip )
+		                            IPAddress bcast_ip )
 		{
-			if ( mult_ip == null )
+			if ( bcast_ip == null )
 				return;
-			broadcast_ip = mult_ip;
+			
+			Started = false;
+			broadcast_ip = bcast_ip;
 			udp_client = _client;
 			object state = null;
 			local_ip = Utils.Utils.GetLocalIP();
-			msg_sending_timer = new Timer( SendOnAir, 
-			                              state, 
-			                              -1, 
-			                              200 );
+			msg_sending_timer = new Timer( SendOnAir,
+			                              state,
+			                              -1,
+			                              msg_sending_timer_int );
 		}
 		
 		/// <summary>
@@ -68,43 +71,43 @@ namespace AutoDiscovery
 		/// </summary>
 		/// <param name="msg_content">Notification contents</param>
 		/// <returns></returns>
-		public int? SendMsg( string msg_content ) {
+		public int SendMsg( string msg_content ) {
 			var onair_bytes =
 				AutoDiscovery.ascii_encoding
 				.GetBytes(FormFullMessage(msg_content));
 			
-			var multicast_ep = new IPEndPoint(
+			var bcast_ep = new IPEndPoint(
 				broadcast_ip,
 				CommonEnvironment.BROADCAST_PORT );
 			
-			return (int?)(udp_client.Send( onair_bytes,
-			                              onair_bytes.Length,
-			                              multicast_ep ));
+			return udp_client.Send( onair_bytes,
+			                       onair_bytes.Length,
+			                       bcast_ep );
 		}
 		
 		/// <summary>
 		/// Start notifying process
 		/// </summary>
 		public void Start() {
-			if ( started == true )
+			if ( Started == true )
 				return;
 			// starting timer
-			msg_sending_timer.Change( 0, 200 );
+			msg_sending_timer.Change( 0, msg_sending_timer_int );
 			// sending "START" message
 			SendMsg( start_bc_msg );
-			started = true;
+			Started = true;
 		}
 
 		/// <summary>
 		/// Stop notifying process
 		/// </summary>
 		public void Stop() {
-			if ( started == false )
+			if ( Started == false )
 				return;
 			// stopping timer
-			msg_sending_timer.Change( -1, 200 );
-			started = false;
-			// sending "STOP" message			
+			msg_sending_timer.Change( -1, msg_sending_timer_int );
+			Started = false;
+			// sending "STOP" message
 			SendMsg( stop_bc_msg );
 		}
 	}

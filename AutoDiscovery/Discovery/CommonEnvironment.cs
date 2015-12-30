@@ -4,18 +4,19 @@
  * Time: 23:51
  */
 using System;
-using AutoDiscovery;
 using System.Net;
-using System.Text;
 using System.Net.Sockets;
-using System.Collections.Generic;
 
 namespace AutoDiscovery
 {
+	/// <summary>
+	/// Several common variables
+	/// </summary>
 	public static class CommonEnvironment
 	{
-		public static UdpClient udp_client;
-		public static int BROADCAST_PORT = 45100;
+		public static readonly UdpClient udp_client;
+		public static readonly int BROADCAST_PORT = 45200;
+		public static readonly IPAddress bcast_address = IPAddress.Broadcast;
 		
 		static CommonEnvironment() {
 			udp_client = new UdpClient(

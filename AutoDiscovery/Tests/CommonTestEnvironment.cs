@@ -13,7 +13,7 @@ namespace AutoDiscovery.Tests
 	public static class CommonTestEnvironment
 	{
 		public static void Disconnect() {
-			if (CommonEnvironment.udp_client.Client.Connected)
+			if ( CommonEnvironment.udp_client.Client.Connected )
 				CommonEnvironment.udp_client.Close();
 		
 		}
