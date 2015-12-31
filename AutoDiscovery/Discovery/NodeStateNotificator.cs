@@ -3,8 +3,13 @@
  * Date: 12/27/2015
  * Time: 14:39
  */
+
+/*
+ *  NodeStateNotificator send messages about current state of our node
+ * (START, ONAIR, STOP) with some time interval (200 ms in our case).
+ */
+
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -25,11 +30,14 @@ namespace AutoDiscovery
 		#endregion
 		
 		private readonly UdpClient udp_client = null;
+		// a Message sending timer
 		private readonly Timer msg_sending_timer = null;
+		// a Message sending interval, ms
 		private readonly int msg_sending_timer_int = 200;
 		
 		private IPAddress broadcast_ip;
 		private String local_ip;
+		
 		public bool Started { get; private set; }
 		
 		public NodeStateNotificator( UdpClient _client,
@@ -42,7 +50,9 @@ namespace AutoDiscovery
 			broadcast_ip = bcast_ip;
 			udp_client = _client;
 			object state = null;
+			
 			local_ip = Utils.Utils.GetLocalIP();
+			
 			msg_sending_timer = new Timer( SendOnAir,
 			                              state,
 			                              -1,
@@ -58,10 +68,10 @@ namespace AutoDiscovery
 		}
 		
 		/// <summary>
-		/// Forming a full message for transmitting into network
+		/// Forms a full message for transmitting into network
 		/// </summary>
-		/// <param name="msg_content"></param>
-		/// <returns></returns>
+		/// <param name="msg_content">A content of message</param>
+		/// <returns>A message in text form</returns>
 		private string FormFullMessage( string msg_content ) {
 			return local_ip.ToString()+":"+msg_content;
 		}
@@ -70,7 +80,7 @@ namespace AutoDiscovery
 		/// Sends a notification
 		/// </summary>
 		/// <param name="msg_content">Notification contents</param>
-		/// <returns></returns>
+		/// <returns>Amount of transmitted bytes</returns>
 		public int SendMsg( string msg_content ) {
 			var onair_bytes =
 				AutoDiscovery.ascii_encoding
@@ -86,7 +96,7 @@ namespace AutoDiscovery
 		}
 		
 		/// <summary>
-		/// Start notifying process
+		/// Starts notifying process
 		/// </summary>
 		public void Start() {
 			if ( Started == true )
@@ -95,20 +105,25 @@ namespace AutoDiscovery
 			msg_sending_timer.Change( 0, msg_sending_timer_int );
 			// sending "START" message
 			SendMsg( start_bc_msg );
+			
+			// set marker
 			Started = true;
 		}
 
 		/// <summary>
-		/// Stop notifying process
+		/// Stops notifying process
 		/// </summary>
 		public void Stop() {
 			if ( Started == false )
 				return;
 			// stopping timer
 			msg_sending_timer.Change( -1, msg_sending_timer_int );
-			Started = false;
+
 			// sending "STOP" message
 			SendMsg( stop_bc_msg );
+			
+			// set marker
+			Started = false;
 		}
 	}
 }

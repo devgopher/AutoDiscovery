@@ -3,6 +3,13 @@
  * Date: 29.12.2015
  * Time: 0:04
  */
+ 
+ /*
+  *  ActivityMonitor represents functions of nodes monitoring.
+  *  It tracks messaging activities of each node and finds ones, from
+  *  which our node didn't receive any messages during 5 seconds
+  */ 
+ 
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -16,9 +23,12 @@ namespace AutoDiscovery
 	/// </summary>
 	public class ActivityMonitor
 	{
+		// an Activity Monitor timer
 		private Timer am_timer = null;
+		// timer interval
 		private const int am_timer_int = 200;
 		
+		// old messages seeking timer
 		private Timer old_messages_timer = null;
 		
 		#if DEBUG

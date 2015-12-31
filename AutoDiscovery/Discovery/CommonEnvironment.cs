@@ -14,8 +14,11 @@ namespace AutoDiscovery
 	/// </summary>
 	public static class CommonEnvironment
 	{
+		// a UDP client
 		public static readonly UdpClient udp_client;
+		// A broadcast port
 		public static readonly int BROADCAST_PORT = 45200;
+		// A broadcast IP address
 		public static readonly IPAddress bcast_address = IPAddress.Broadcast;
 		
 		static CommonEnvironment() {
