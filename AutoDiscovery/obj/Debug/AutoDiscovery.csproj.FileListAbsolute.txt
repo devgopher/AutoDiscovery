@@ -22,3 +22,4 @@ C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\A
 C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.g.resources
 C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.exe
 C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\obj\Debug\AutoDiscovery.pdb
+C:\Users\igor.evdokimov\Documents\Github\AutoDiscovery\AutoDiscovery\bin\Debug\NUnit.Framework.dll

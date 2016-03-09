@@ -64,3 +64,9 @@ AutoDiscovery/obj/Debug/AutoDiscovery.csproj.FileListAbsolute.txt
 *.cache
 *.exe
 *.dll
+*.baml
+AutoDiscovery/obj/Debug/ADWindow.g.cs
+AutoDiscovery/obj/Debug/AutoDiscovery.csproj.FileListAbsolute.txt
+*.cache
+AutoDiscovery/obj/Debug/AutoDiscovery_MarkupCompile.cache
+*.lref

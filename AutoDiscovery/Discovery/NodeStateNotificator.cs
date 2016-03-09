@@ -101,8 +101,10 @@ namespace AutoDiscovery
 		public void Start() {
 			if ( Started == true )
 				return;
+			
 			// starting timer
 			msg_sending_timer.Change( 0, msg_sending_timer_int );
+			
 			// sending "START" message
 			SendMsg( start_bc_msg );
 			
